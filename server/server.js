@@ -21,15 +21,26 @@ app.use(express.static(publicPath));
 io.on('connection', function (socket) {
   console.log("new connection");
 
-  socket.emit('newEmail', {
-    from: 'mike@email.com',
-    text: 'yooo'
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat app'
   })
 
-  socket.emit('newMessage', {
-    from: 'ya boyy',
-    text: 'wash pappin '
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'Andrew just joined the chat',
+    createdAt: new Date().getTime()
   })
+
+  // socket.emit('newEmail', {
+  //   from: 'mike@email.com',
+  //   text: 'yooo'
+  // })
+  //
+  // socket.emit('newMessage', {
+  //   from: 'ya boyy',
+  //   text: 'wash pappin '
+  // })
 
   socket.on('createEmail', function(newEmail){
     console.log('createEmail', newEmail);
@@ -37,11 +48,16 @@ io.on('connection', function (socket) {
 
   socket.on('createMessage', function (message) {
     console.log('createMessage', message)
-    io.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    })
+    // io.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
   })
 
   socket.on('disconnect', function(){
